@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: stg_crypto_prices
+    columns:
+      - name: message_id
+        tests:
+          - unique
+          - not_null
+      - name: coin_id
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['bitcoin', 'ethereum', 'solana']
+      - name: price_usd
+        tests:
+          - not_null

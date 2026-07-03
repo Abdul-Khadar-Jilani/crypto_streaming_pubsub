@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: streaming_raw
+    database: gen-lang-client-0461437803
+    schema: streaming_raw
+    tables:
+      - name: crypto_prices
+        loaded_at_field: publish_time
+        freshness:
+          warn_after: {count: 5, period: minute}
+          error_after: {count: 15, period: minute}
