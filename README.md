@@ -1,10 +1,18 @@
-# Crypto Streaming Data Pipeline (dbt)
+# Crypto Streaming Data Pipeline
 
-This repository contains a dbt (data build tool) project that processes cryptocurrency streaming data stored in BigQuery. The project applies data quality checks, deduplication, and various aggregations to produce analytics-ready datasets.
+This repository contains an end-to-end data pipeline that ingests real-time cryptocurrency data and processes it into analytics-ready datasets using dbt (data build tool) and BigQuery.
 
-## How it Works
+## Architecture & Data Flow
 
-The pipeline follows a standard dbt architecture containing three core stages: **Staging**, **Intermediate**, and **Marts**. The raw data is continuously streamed into a BigQuery dataset (`streaming_raw`).
+The pipeline is broken down into two main phases: **Data Ingestion** and **Data Transformation**.
+
+### 1. Data Ingestion (Pub/Sub & BigQuery)
+* Live cryptocurrency prices are fetched from an open-source crypto API.
+* This data is continuously pushed to Google Cloud Pub/Sub in real-time.
+* A Pub/Sub BigQuery subscription directly streams these raw messages into a BigQuery source dataset (`streaming_raw`), acting as the foundation for our transformations.
+
+### 2. Data Transformation (dbt)
+Once the raw data lands in BigQuery, dbt takes over to apply data quality checks, deduplication, and aggregations. The dbt pipeline follows a standard architecture containing three core stages: **Staging**, **Intermediate**, and **Marts**.
 
 ### 1. Staging (`models/staging`)
 The staging layer acts as the entry point for raw data into the dbt project. It performs basic cleaning and standardizations.
